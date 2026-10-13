@@ -1,0 +1,21 @@
+{
+  "name": "my-agent",
+  "version": "1.0.0",
+  "description": "A minimal CLI AI agent powered by DeepSeek",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "tsx --env-file=.env src/index.ts",
+    "build": "tsc",
+    "start": "node --env-file=.env dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "openai": "^6.49.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
