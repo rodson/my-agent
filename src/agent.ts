@@ -25,7 +25,7 @@ export class Agent {
     this.messages = [{ role: 'system', content: SYSTEM_PROMPT }];
   }
 
-  // 处理一条用户输入：反复调用模型并执行工具，直到模型给出不含工具调用的最终回复
+  // Handle one user input: call the model and run tools repeatedly until it replies without tool calls
   async run(userInput: string): Promise<string> {
     this.messages.push({ role: 'user', content: userInput });
 
@@ -46,7 +46,7 @@ export class Agent {
         return message.content ?? '';
       }
 
-      // 每个 tool_call 都必须有一条对应 tool_call_id 的 tool 消息，否则下一次请求会报错
+      // Every tool_call needs a tool message with a matching tool_call_id, or the next request fails
       for (const call of message.tool_calls) {
         let result: string;
         if (call.type === 'function') {
@@ -63,7 +63,7 @@ export class Agent {
   }
 }
 
-// 打印工具调用时只显示关键参数，避免把整个文件内容刷到屏幕上
+// Show only the key argument when logging a tool call, so whole file contents don't flood the screen
 function summarizeArgs(rawArgs: string): string {
   try {
     const args = JSON.parse(rawArgs);

@@ -21,7 +21,7 @@ function truncate(text: string): string {
   return `${text.slice(0, MAX_OUTPUT_CHARS)}\n...[已截断，共 ${text.length} 字符]`;
 }
 
-// 把模型给的路径解析为绝对路径，并拒绝工作目录之外的路径
+// Resolve a model-supplied path to an absolute path, rejecting anything outside the working directory
 function resolveInWorkDir(p: unknown): string {
   if (typeof p !== 'string' || p === '') throw new Error('path 必须是非空字符串');
   const abs = path.resolve(WORK_DIR, p);
@@ -113,7 +113,7 @@ const runCommandTool: Tool = {
         maxBuffer: 1024 * 1024,
       }));
     } catch (err) {
-      // 非零退出码、超时也会进入这里，此时 err 上同样带有 stdout/stderr
+      // Non-zero exit codes and timeouts also land here; err still carries stdout/stderr
       const e = err as { code?: number; killed?: boolean; stdout?: string; stderr?: string; message: string };
       exitCode = typeof e.code === 'number' ? e.code : 1;
       stdout = e.stdout ?? '';
@@ -128,7 +128,7 @@ const tools: Tool[] = [readFileTool, writeFileTool, runCommandTool];
 
 export const toolDefinitions = tools.map((t) => t.definition);
 
-// 执行工具调用。任何错误都转成字符串返回给模型，而不是让程序崩溃
+// Run a tool call. Every error becomes a string returned to the model instead of crashing the program
 export async function runTool(name: string, rawArgs: string): Promise<string> {
   const tool = tools.find((t) => t.definition.function.name === name);
   if (!tool) return `错误：未知工具 ${name}`;
