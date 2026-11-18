@@ -2,7 +2,7 @@ import OpenAI from 'openai';
 import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
 import { runTool, toolDefinitions } from './tools.js';
 
-const MODEL = 'deepseek-chat';
+const MODEL = 'deepseek-flash';
 const MAX_TOOL_ITERATIONS = 20;
 
 const SYSTEM_PROMPT = `你是一个运行在用户终端里的 AI 助手，可以通过工具读写文件、执行 shell 命令来完成任务。
